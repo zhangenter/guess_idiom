@@ -7,4 +7,4 @@ pip install pygame
 `
 # playing
 
-![time](https://github.com/zhangenter/guess_idiom/blob/master/cap.png) 
+![time](https://github.com/zhangenter/guess_idiom/blob/master/cap1.png) 
