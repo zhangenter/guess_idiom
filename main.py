@@ -24,10 +24,10 @@ word_arr = list(word_dic.keys())
 header_height = 30
 main_space = 20
 
-block_size = 32
+block_size = 36
+block_num=12
 bspace = 2
 space = 20
-block_num=12
 width = block_size * block_num + main_space * 2
 height = header_height + block_size * block_num + main_space * 2 + (block_size+space) * 3
 
@@ -35,7 +35,7 @@ pygame.init()
 screen = pygame.display.set_mode((width,height))
 screencaption = pygame.display.set_caption(u'成语填空')
 
-font = pygame.font.Font(u'syht.otf', int(block_size*0.9))
+font = pygame.font.Font(u'syht.otf', int(block_size*0.8))
 
 dray_gray = 50,50,50
 white = 255,255,255
@@ -329,7 +329,10 @@ while True:
 				else:
 					textImage = font.render(info.word, True, dray_gray)
 
-				panel.blit(textImage, (bx,by))
+				tw, th = textImage.get_size()
+				dx=(block_size-bspace*2-tw)/2
+				dy=(block_size-bspace*2-th)/2
+				panel.blit(textImage, (bx+dx,by+dy))
 				if (i,j) == select_rect:
 					pygame.draw.rect(panel,(255,0,0),(bx,by,block_size-bspace*2,block_size-bspace*2),2)
 
@@ -340,7 +343,10 @@ while True:
 		screen.blit(block_bg_image, (sx + (n%block_num)*block_size,sy + (n/block_num)*block_size))
 		if op is None:
 			textImage = font.render(word, True, dray_gray)
-			screen.blit(textImage, (sx+ (n%block_num)*block_size,sy+ (n/block_num)*block_size))
+			tw, th = textImage.get_size()
+			dx=(block_size-bspace*2-tw)/2
+			dy=(block_size-bspace*2-th)/2
+			screen.blit(textImage, (dx+sx+ (n%block_num)*block_size,dy+sy+ (n/block_num)*block_size))
 		n+=1
 
 	pygame.display.update()
