@@ -91,7 +91,7 @@ def check_new_idiom(matrix, new_idiom, new_dire, word_info):
 	ignore_set = set([(cx,cy)])
 
 	new_idiom_word_arr=[]
-	for i in range(-windex,-windex+4): 
+	for i in range(-windex,-windex+len(new_idiom)): 
 		if i==0: 
 			new_idiom_word_arr.append(word_info)
 		else:
@@ -136,7 +136,7 @@ def add_idiom_to_matrix(matrix, word_dic, idiom_dic, idiom_num):
 							new_idiom_info.word_arr.append(new_word_info)
 					idiom_dic[new_idiom] = new_idiom_info
 
-					return 3 + add_idiom_to_matrix(matrix, word_dic, idiom_dic, idiom_num - 1)
+					return len(new_idiom) -1 + add_idiom_to_matrix(matrix, word_dic, idiom_dic, idiom_num - 1)
 
 	return 0
 
@@ -149,7 +149,7 @@ def get_idiom_matrix(word_arr, word_dic, idiom_num):
 	idiom = word_dic[word][0]
 	idiom_dic={}
 	idiom_dic[idiom] = IdiomInfo(idiom)
-	wn = 4
+	wn = len(idiom)
 	last_i = -100
 	for i in range(len(idiom)):
 		word_info = WordInfo(idiom[i],cx-1+i,cy)
