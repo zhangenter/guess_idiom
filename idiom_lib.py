@@ -64,7 +64,7 @@ class IdiomLib():
 		self.all_word_num=0
 		self.hide_arr = []
 
-	def load_idiom_from_file(self, filename='words.txt'):
+	def load_idiom_from_file(self, filename='poetry.txt'):
 		f = open(filename)
 		all_idiom = f.readlines()
 		f.close()
@@ -236,7 +236,7 @@ class IdiomLib():
 		self.select_rect = self.hide_arr[0][0],self.hide_arr[0][1]
 
 if __name__ == '__main__':
-	lib = IdiomLib()
+	lib = IdiomLib(block_num=10)
 	lib.load_idiom_from_file()
 
 	arr = []
@@ -248,8 +248,8 @@ if __name__ == '__main__':
 		hide_arr = []
 		for x,y,word,op in lib.hide_arr:
 			hide_arr.append('%s %s %s'%(x,y,word))
-		arr.append({'word_num':lib.all_word_num,'idiom_arr':';'.join(idiom_arr),'hide_arr':';'.join(hide_arr)})
-	arr.sort(cmp=lambda x,y:cmp(x['word_num'], y['word_num']))
+		arr.append({'hide_num':len(hide_arr),'block_num':lib.block_num, 'word_num':lib.all_word_num,'idiom_arr':';'.join(idiom_arr),'hide_arr':';'.join(hide_arr)})
+	arr.sort(cmp=lambda x,y:cmp(x['hide_num']*2+x['word_num'], y['hide_num']*2+y['word_num']))
 
 	import json
 	f = open('idiom.json','w+') 
