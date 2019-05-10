@@ -138,16 +138,18 @@ class IdiomLib():
 		self.idiom_dic={}
 		cx = self.block_num/2-1
 		cy = self.block_num/2-1
+
 		n = random.randint(0,len(self.word_arr)-1)
 		word = self.word_arr[n]
 		idiom = self.word_dic[word][0]
+		wn = len(idiom)
 		
 		self.idiom_dic[idiom] = IdiomInfo(idiom)
-		wn = len(idiom)
+
 		last_i = -100
 		for i in range(len(idiom)):
-			word_info = WordInfo(idiom[i],cx-1+i,cy)
-			self.matrix.set_val(cx-1+i,cy,word_info)
+			word_info = WordInfo(idiom[i],cx-wn/2+1+i,cy)
+			self.matrix.set_val(cx-wn/2+1+i,cy,word_info)
 			self.idiom_dic[idiom].word_arr.append(word_info)
 
 		wn += self.add_idiom_to_matrix(idiom_num-1)
@@ -155,32 +157,53 @@ class IdiomLib():
 
 	def get_hide_arr(self, percent):
 		self.hide_arr=[]
+		# for k,v in self.idiom_dic.items():
+		# 	n = random.randint(0, len(v.word_arr)-1)
+		# 	word_info = v.word_arr[n]
+		# 	if word_info.hide_index != -1:continue
+		# 	word = word_info.word
+		# 	info = self.matrix.get_val(word_info.i,word_info.j)
+		# 	info.word = ''
+		# 	info.hide_index = len(self.hide_arr)
+		# 	info.is_lock = False
+		# 	self.hide_arr.append([word_info.i,word_info.j,word,None])
+
+		# tmp_arr = []
+		# for i in range(self.block_num):
+		# 	for j in range(self.block_num):
+		# 		info = self.matrix.get_val(i,j)
+		# 		if info and info.word:
+		# 			tmp_arr.append((i,j,info.word))
+
+		# while len(self.hide_arr) < self.all_word_num*percent:
+		# 	n = random.randint(0,len(tmp_arr)-1)
+		# 	i,j,word = tmp_arr.pop(n)
+		# 	info = self.matrix.get_val(i,j)
+		# 	info.word = ''
+		# 	info.hide_index = len(self.hide_arr)
+		# 	info.is_lock = False
+		# 	self.hide_arr.append([i,j,word,None])
+		idiom_word_arr = []
+
 		for k,v in self.idiom_dic.items():
-			n = random.randint(0, len(v.word_arr)-1)
-			word_info = v.word_arr[n]
-			if word_info.hide_index != -1:continue
-			word = word_info.word
-			info = self.matrix.get_val(word_info.i,word_info.j)
-			info.word = ''
-			info.hide_index = len(self.hide_arr)
-			info.is_lock = False
-			self.hide_arr.append([word_info.i,word_info.j,word,None])
+			arr = []
+			for word_info in v.word_arr:
+				arr.append(word_info)
+			idiom_word_arr.append([k, arr])
+		idiom_word_arr.sort(cmp=lambda x,y:cmp(len(y[-1]),len(x[-1])))
 
-		tmp_arr = []
-		for i in range(self.block_num):
-			for j in range(self.block_num):
-				info = self.matrix.get_val(i,j)
-				if info and info.word:
-					tmp_arr.append((i,j,info.word))
-
+		idiom_index = 0
 		while len(self.hide_arr) < self.all_word_num*percent:
+			tmp_arr = idiom_word_arr[idiom_index%len(idiom_word_arr)][1]
 			n = random.randint(0,len(tmp_arr)-1)
-			i,j,word = tmp_arr.pop(n)
-			info = self.matrix.get_val(i,j)
+			info = tmp_arr.pop(n)
+			word=info.word 
 			info.word = ''
 			info.hide_index = len(self.hide_arr)
 			info.is_lock = False
-			self.hide_arr.append([i,j,word,None])
+			self.hide_arr.append([info.i,info.j,word,None])
+			idiom_index+=1
+
 
 		return self.hide_arr  
 
