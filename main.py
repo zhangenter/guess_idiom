@@ -4,8 +4,16 @@ import random
 import pygame
 from pygame.locals import *
 from idiom_lib import IdiomLib
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
+if sys.version_info < (3,0):
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+elif sys.version_info <= (3,3):
+    import imp
+    imp.reload(sys)
+else:
+    import importlib
+    importlib.reload(sys)
 
 block_num=12
 lib = IdiomLib(block_num=block_num)
@@ -22,7 +30,7 @@ height = header_height + block_size * block_num + main_space * 2 + (block_size+s
 
 pygame.init()
 screen = pygame.display.set_mode((width,height))
-screencaption = pygame.display.set_caption(u'成语填空')
+screencaption = pygame.display.set_caption(u'诗词填空')
 
 font = pygame.font.Font(u'syht.otf', int(block_size*0.8))
 
@@ -44,8 +52,8 @@ stage = 1
 lib.init(stage)
 stage_textImage = pygame.font.Font(u'syht.otf', 30).render(u'第%s关'%stage, True, dray_gray)
 stage_font_width, stage_font_height = stage_textImage.get_size()
-stage_x = (width - stage_font_width)/2
-stage_y = (header_height - stage_font_height)/2+main_space/2
+stage_x = int((width - stage_font_width)/2)
+stage_y = int((header_height - stage_font_height)/2)+int(main_space/2)
 while True:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -77,7 +85,7 @@ while True:
 				n = 0
 				for hi in range(len(lib.hide_arr)):
 					tmp_x = sx + (n%block_num)*block_size
-					tmp_y = sy + (n/block_num)*block_size
+					tmp_y = sy + int(n/block_num)*block_size
 					if lib.hide_arr[hi][-1] is None and x >= tmp_x and x <= tmp_x+block_size-bspace*2 and y >= tmp_y and y<= tmp_y+block_size-bspace*2:
 						info = lib.matrix.get_val(lib.select_rect[0],lib.select_rect[1])
 						info.word = lib.hide_arr[hi][2]
@@ -119,8 +127,8 @@ while True:
 					textImage = font.render(info.word, True, dray_gray)
 
 				tw, th = textImage.get_size()
-				dx=(block_size-bspace*2-tw)/2
-				dy=(block_size-bspace*2-th)/2
+				dx=int((block_size-bspace*2-tw)/2)
+				dy=int((block_size-bspace*2-th)/2)
 				panel.blit(textImage, (bx+dx,by+dy))
 				if (i,j) == lib.select_rect:
 					pygame.draw.rect(panel,(255,0,0),(bx,by,block_size-bspace*2,block_size-bspace*2),2)
@@ -129,13 +137,13 @@ while True:
 	sy = header_height + main_space+ block_size*block_num +space
 	n = 0
 	for i,j,word,op in lib.hide_arr:
-		screen.blit(block_bg_image, (sx + (n%block_num)*block_size,sy + (n/block_num)*block_size))
+		screen.blit(block_bg_image, (sx + (n%block_num)*block_size,sy + int(n/block_num)*block_size))
 		if op is None:
 			textImage = font.render(word, True, dray_gray)
 			tw, th = textImage.get_size()
-			dx=(block_size-bspace*2-tw)/2
-			dy=(block_size-bspace*2-th)/2
-			screen.blit(textImage, (dx+sx+ (n%block_num)*block_size,dy+sy+ (n/block_num)*block_size))
+			dx=int((block_size-bspace*2-tw)/2)
+			dy=int((block_size-bspace*2-th)/2)
+			screen.blit(textImage, (dx+sx+ (n%block_num)*block_size,dy+sy+ int(n/block_num)*block_size))
 		n+=1
 
 	pygame.display.update()
