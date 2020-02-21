@@ -169,6 +169,6 @@ def run(mode):
 
 		pygame.display.update()
 
-if __file__ == '__main__':
+if __name__ == '__main__':
 	run(mode=1)
 
