@@ -86,7 +86,9 @@ class IdiomLib():
         self.hide_arr = [] # 当前关卡用于保存中间区域的缺字格子,列表类型：[[x,y,文字,None],……]
 
     # 从文件中加载诗句
-    def load_idiom_from_file(self, filename='poetry.txt'):
+    def load_idiom_from_file(self, mode=1):
+        filename = ('poetry.txt','words.txt','english.txt')[mode-1]
+
         if sys.version_info < (3,0): 
             f = open(filename)
         else:
