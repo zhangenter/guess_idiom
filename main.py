@@ -1,9 +1,13 @@
 # -*- coding=utf-8 -*-
+import pkg_resources
 import sys
 import random
 import pygame
 from pygame.locals import *
-from idiom_lib import IdiomLib
+from idiom_lib import IdiomLib, resource_path
+
+def get_font_file():
+	return resource_path('syht.otf')
 
 def run(mode):
 	if sys.version_info < (3,0):
@@ -42,22 +46,22 @@ def run(mode):
 	title = (u'诗词填空',u'成语填空',u'英语单词填空')[mode-1]
 	screencaption = pygame.display.set_caption(title)
 
-	font = pygame.font.Font(u'syht.otf', int(block_size*0.8))
+	font = pygame.font.Font(get_font_file(), int(block_size*0.8))
 
 	dray_blue = 50,50,200
 	white = 255,255,255
 	#textImage = font.render(u'你好', True, white)
 
 	# 加载和拉伸背景图片
-	bg_image = pygame.image.load('bg.jpeg')
+	bg_image = pygame.image.load(resource_path('bg.jpeg'))
 	bg_image = pygame.transform.scale(bg_image,(width, height))
 
 	# 加载和拉伸中间区域的图片
-	bg2_image = pygame.image.load('bg2.jpeg')
+	bg2_image = pygame.image.load(resource_path('bg2.jpeg'))
 	bg2_image = pygame.transform.scale(bg2_image,(block_size*block_num,block_size*block_num))
 
 	# 加载和拉伸每个汉字的米字格背景图片
-	block_bg_image = pygame.image.load('tzg.jpg')
+	block_bg_image = pygame.image.load(resource_path('tzg.jpg'))
 	block_bg_image = pygame.transform.scale(block_bg_image,(block_size-bspace*2,block_size-bspace*2))
 
 
@@ -65,7 +69,7 @@ def run(mode):
 	lib.init(stage) # 初始化第一关
 
 	# 获取文字宽度高度，以保证文字居中显示
-	stage_textImage = pygame.font.Font(u'syht.otf', 30).render(u'第%s关'%stage, True, dray_blue)
+	stage_textImage = pygame.font.Font(get_font_file(), 30).render(u'第%s关'%stage, True, dray_blue)
 	stage_font_width, stage_font_height = stage_textImage.get_size()
 	stage_x = int((width - stage_font_width)/2)
 	stage_y = int((header_height - stage_font_height)/2)+int(main_space/2)
@@ -74,7 +78,7 @@ def run(mode):
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
-				exit()
+				sys.exit()
 
 			if event.type == MOUSEBUTTONDOWN:
 				pressed_array = pygame.mouse.get_pressed()
@@ -117,7 +121,7 @@ def run(mode):
 							if flag:
 								stage += 1
 								lib.init(stage)
-								stage_textImage = pygame.font.Font(u'syht.otf', 30).render(u'第%s关'%stage, True, dray_blue)
+								stage_textImage = pygame.font.Font(get_font_file(), 30).render(u'第%s关'%stage, True, dray_blue)
 							break
 						n += 1
 

@@ -1,5 +1,5 @@
 # -*- coding=utf-8 -*-
-import sys
+import os, sys
 import random
 
 if sys.version_info < (3,0):
@@ -11,6 +11,13 @@ elif sys.version_info <= (3,3):
 else:
     import importlib
     importlib.reload(sys)
+
+def resource_path(relative):
+	if hasattr(sys, "_MEIPASS"):
+		absolute_path = os.path.join(sys._MEIPASS, relative)
+	else:
+		absolute_path = os.path.join(relative)
+	return absolute_path
 
 # 用于存放一条诗句的类
 class IdiomInfo(object):
@@ -90,9 +97,9 @@ class IdiomLib():
         filename = ('poetry.txt','words.txt','english.txt')[mode-1]
 
         if sys.version_info < (3,0): 
-            f = open(filename)
+            f = open(resource_path(filename))
         else:
-            f = open(filename,encoding='UTF-8')
+            f = open(resource_path(filename),encoding='UTF-8')
         all_idiom = f.readlines()
         f.close()
 
