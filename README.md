@@ -9,7 +9,7 @@ pip install pygame
 
 python main.py
 
-![time](https://github.com/zhangenter/guess_idiom/blob/master/cap1.png) 
+![image](https://github.com/zhangenter/guess_idiom/blob/master/cap1.png) 
 
 select mode
 
@@ -21,4 +21,4 @@ pip install pybfcontrol
 
 python run.py
 
-![time](https://github.com/zhangenter/guess_idiom/blob/master/cap2.png) 
+![image](https://github.com/zhangenter/guess_idiom/blob/master/cap2.png) 
